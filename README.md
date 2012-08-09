@@ -5,13 +5,12 @@ The signature pad field is a formpanel element for drawing signatures. It is an 
 
 Utilizing the component is quite easy:
 
-{
+
 xtype: 'signaturefield',
 sigWidth: 350,
 sigHeight: 150,
 label:'Enter Signature',
 labelWidth: '20%'
-}
 
 sigWidth and sigHeight will set the dimensions of the overlay canvas object and are the only additional config items in this extension. The rest of the config items follow standard ST2 config.
 
