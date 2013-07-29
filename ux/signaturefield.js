@@ -14,11 +14,25 @@ Ext.define('ux.signaturefield', {
          * @cfg {Number} sigHeight The height of the signature canvas object
          * @accessor
          */
-		sigHeight:150,
-		component: {
-            xtype: 'panel'
-        }
+	        sigHeight:150,
+                component: {
+                        xtype: 'panel',
+                        items: [{
+                                xtype: 'input',
+                                type: 'hidden'
+                        },{
+                                xtype: 'panel'
+                        }]
+                }
 	}, 
+        // pass Name set/get on to hidden input
+        updateName: function(newName){
+                var cmp = Ext.ComponentQuery.query('input[type="hidden"]', this.getComponent());
+                if (cmp.length) {
+                        return cmp[0].setName(newName);
+                }
+                return null;
+        },
 	initialize: function(){
 		this.callParent();
 
@@ -166,8 +180,19 @@ Ext.define('ux.signaturefield', {
 		this.setValue(encodedValue);
 	},
 	setValue: function(value) {		
-		this.getComponent().setHtml('<img src="'+value+'" width="'+this.width+'"  height="'+this.height+'" />');
-		this.fieldValue = value;
+                var imgstr = '<img src="'+value+'" width="'+this.width+'"  height="'+this.height+'" />';
+                // display in panel
+                var pnl = Ext.ComponentQuery.query('panel', this.getComponent());
+                if (pnl.length) {
+                        pnl[0].setHtml(imgstr);
+                }
+                // let that HTML string be the value of the field (for the hidden input)
+		this.fieldValue = imgstr;
+                // also update the hidden input for "standard submit", if used
+                var inp = Ext.ComponentQuery.query('input[type="hidden"]', this.getComponent());
+                if (inp.length) {
+                        inp[0].setValue(imgstr);
+                }
 	},
 	getValue: function() {
 		return this.fieldValue;
