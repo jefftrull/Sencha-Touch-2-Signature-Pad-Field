@@ -179,8 +179,14 @@ Ext.define('ux.signaturefield', {
 		this.resetCanvas();
 		this.setValue(encodedValue);
 	},
-	setValue: function(value) {		
-                var imgstr = '<img src="'+value+'" width="'+this.width+'"  height="'+this.height+'" />';
+        setValue: function(value) {
+                var imgstr;
+                // unsupplied image data can result in ugly artifacts if we don't explicitly check for them:
+                if ((value == undefined) || (value == null) || (value == '')) {
+                        imgstr = '';
+                } else {
+                        imgstr = '<img src="'+value+'" width="'+this.width+'"  height="'+this.height+'" />';
+                }
                 // display in panel
                 var pnl = Ext.ComponentQuery.query('panel', this.getComponent());
                 if (pnl.length) {
