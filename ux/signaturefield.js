@@ -33,6 +33,14 @@ Ext.define('ux.signaturefield', {
                 }
                 return null;
         },
+        updateReadOnly: function(newReadOnly){
+                // pass on readonly to embedded input field
+                var cmp = Ext.ComponentQuery.query('input[type="hidden"]', this.getComponent());
+                if (cmp.length) {
+                        return cmp[0].setReadOnly(newReadOnly);
+                }
+                return null;
+        },
 	initialize: function(){
 		this.callParent();
 
@@ -122,6 +130,10 @@ Ext.define('ux.signaturefield', {
 	  HTMLCanvasElement.prototype.relMouseCoords = this.relMouseCoords;
 	},
 	openCanvasSheet: function() {
+                if (this.getReadOnly()) {
+                        // suppress event; we don't allow editing now
+                        return false;
+                }
 		this.actionOverlay.show();
 	},
 	relMouseCoords: function (e){
