@@ -195,17 +195,16 @@ Ext.define('ux.signaturefield', {
                 var imgstr;
                 // unsupplied image data can result in ugly artifacts if we don't explicitly check for them:
                 if ((value == undefined) || (value == null) || (value == '')) {
-                        imgstr = '';
+                        this.fieldValue = imgstr = '';
                 } else {
                         imgstr = '<img src="'+value+'" width="'+this.width+'"  height="'+this.height+'" />';
+                        this.fieldValue = value;
                 }
                 // display in panel
                 var pnl = Ext.ComponentQuery.query('panel', this.getComponent());
                 if (pnl.length) {
                         pnl[0].setHtml(imgstr);
                 }
-                // let that HTML string be the value of the field (for the hidden input)
-		this.fieldValue = imgstr;
                 // also update the hidden input for "standard submit", if used
                 var inp = Ext.ComponentQuery.query('input[type="hidden"]', this.getComponent());
                 if (inp.length) {
