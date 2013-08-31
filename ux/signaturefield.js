@@ -44,9 +44,6 @@ Ext.define('ux.signaturefield', {
 	initialize: function(){
 		this.callParent();
 
-		this.width = this.getSigWidth();
-		this.height = this.getSigHeight();
-		
 		Ext.define('ux.signature.Canvas', {
 			extend: 'Ext.Component',
 			xtype: 'signaturefieldcanvas',
@@ -101,7 +98,6 @@ Ext.define('ux.signaturefield', {
 		this.resetButton.element.on('tap', this.resetCanvas, this);
 		this.saveButton.element.on('tap', this.saveCanvas, this);
 		
-		this.actionOverlayCanvas.setStyle('border:1px solid #000;height:'+this.height+'px;width:'+this.width+'px;margin-right:auto;margin-left:auto;margin-top:auto;margin-bottom:auto;');
 		
 		//now lets check to see if we have toDataURL support for android if not use JPEGEncoder
 		var tdu = HTMLCanvasElement.prototype.toDataURL;
@@ -116,6 +112,19 @@ Ext.define('ux.signaturefield', {
 			}
 		}
 	},
+        updateSigWidth: function(newWidth, oldWidth) {
+                this.width = newWidth;
+                this.updateDimensions();
+        },
+        updateSigHeight: function(newHeight, oldHeight) {
+                this.height = newHeight;
+                this.updateDimensions();
+        },
+        updateDimensions: function() {
+                if (this.actionOverlayCanvas) {
+		        this.actionOverlayCanvas.setStyle('border:1px solid #000;height:'+this.height+'px;width:'+this.width+'px;margin-right:auto;margin-left:auto;margin-top:auto;margin-bottom:auto;');
+                }
+        },
 	initCanvas: function(){		
 		this.bMouseIsDown = false;		
 		oCanvas = this.actionOverlayCanvas.element.dom.firstChild;	  
