@@ -23,7 +23,18 @@ Ext.define('ux.signaturefield', {
                         },{
                                 xtype: 'panel'
                         }]
-                }
+                },
+		/**
+         * @cfg {String} saveText The text to use for the Save button
+         * @accessor
+         */
+                saveText: 'Save',
+		/**
+         * @cfg {String} resetText The text to use for the Reset button
+         * @accessor
+         */
+                resetText: 'Reset'
+
 	}, 
         // pass Name set/get on to hidden input
         updateName: function(newName){
@@ -61,11 +72,11 @@ Ext.define('ux.signaturefield', {
 			//additional config
 		});
 		this.resetButton = Ext.create('Ext.Button', {
-			text:'Reset',
+			text:this.getResetText(),
 			ui:'normal'
 		});
 		this.saveButton = Ext.create('Ext.Button', {
-			text:'Save',
+			text:this.getSaveText(),
 			ui:'confirm'
 		});
 		this.actionOverlay = Ext.create('Ext.Panel', {
