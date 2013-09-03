@@ -198,7 +198,22 @@ Ext.define('ux.signaturefield', {
 		var encodedValue = canvas.toDataURL();
 		this.actionOverlay.hide();		
 		this.resetCanvas();
-		this.setValue(encodedValue);
+                // check to see if the signature is empty by comparing it to an empty image of equal size
+                var emptyCanvas = Ext.create('ux.signature.Canvas').element.dom.firstChild;
+                emptyCanvas.setAttribute("width", canvas.getAttribute("width"));
+                emptyCanvas.setAttribute("height", canvas.getAttribute("height"));
+                var emptyCtx = emptyCanvas.getContext("2d");
+                emptyCtx.fillStyle = '#FFFFFF';
+                emptyCtx.fillRect(0, 0, canvas.getAttribute("width"), canvas.getAttribute("height"));
+                var emptyUrl1 = emptyCanvas.toDataURL();
+                // resetCanvas performs a "clear", which results in a slightly different (but also empty) Url
+                emptyCtx.clearRect(0, 0, canvas.getAttribute("width"), canvas.getAttribute("height"));
+                var emptyUrl2 = emptyCanvas.toDataURL();
+                if ((encodedValue == emptyUrl1) || (encodedValue == emptyUrl2)) {
+                        this.setValue('');
+                } else {
+		        this.setValue(encodedValue);
+                }
 	},
         setValue: function(value) {
                 var imgstr;
